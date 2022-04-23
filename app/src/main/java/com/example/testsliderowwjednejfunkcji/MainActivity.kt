@@ -20,9 +20,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import com.example.testsliderowwjednejfunkcji.ui.theme.TestSliderowWJednejFunkcjiTheme
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import org.apache.commons.net.ftp.FTPClient
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileWriter
 import kotlin.math.roundToInt
+
 
 
 private val zawodnik_1 = mutableStateOf(0)
@@ -65,6 +68,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
 
 @Composable
 fun Slidery_wszystkie(){
@@ -509,7 +514,20 @@ fun Slidery_wszystkie(){
             numer_zawodnika_4.value = numer_zawodnika_4.value +4
 
             ////// zapis do pliku ////
+            val client = FTPClient()
+            val filename = "t:/kotlin/mk.txt"
+            FileInputStream(filename).use {
+                client.connect("ftp.net-line.com.pl")
+                val login = client.login("vweb1201143", "ftpwiktoria")
 
+                if (login) {
+                    client.storeFile("abc.txt", it)
+                    println("it = $it")
+
+                    client.logout()
+                    client.disconnect()
+                }
+            }
 
 
             ////// koniec zapisu do pliku /////
